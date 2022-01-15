@@ -1,21 +1,16 @@
 const express = require("express");
 const app = express();
-app.listen(3000);
 const bodyParser = require("body-parser");
+const adminRoutes = require("./routes/admin");
+app.listen(3000);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use("/add-users", (req, res) => {
-  res.send(
-    `<form method="POST" action="/log-data"><input type="text" name="user"><button type="submit">Submit</button></form>`
-  );
-});
+app.use("/admin", adminRoutes);
 
-app.use("/log-data", (req, res) => {
-  console.log(req.body);
-  res.redirect("/");
-});
-
-app.use("/", (req, res) => {
+app.get("/", (req, res) => {
   res.send("<h1>its in root route </h1>");
+});
+app.use((req, res) => {
+  res.status(404).send();
 });
